@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Katalog Flim</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Kataloge Movie</string>
+    <string name="nav_header_subtitle">themoviedb.org</string>
+    <string name="nav_header_desc">Navig ation header</string>
+    <string name="action_settings">Konfigurasi</string>
+    <string name="about">by. uxc.wilis (Dcoding)</string>
+    <string name="keysearch">kata kunci</string>
+    <string name="btncari">CARI</string>
+</resources>

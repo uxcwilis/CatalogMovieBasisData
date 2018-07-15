@@ -15,15 +15,29 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.TopRates"></activity>
-        <activity android:name=".activity.DescriptionActivity"></activity>
-        <activity android:name=".activity.SearchMovies"></activity>
-        <activity android:name=".activity.About"></activity>
+        <activity android:name=".activity.TopRates"
+            android:label="TopRates Movies">
+
+        </activity>
+        <activity android:name=".activity.DescriptionActivity"
+            android:label="Description Movies">
+
+        </activity>
+        <activity android:name=".activity.About"
+            android:label="About">
+
+        </activity>
+        <activity android:name=".activity.PlayNow"
+            android:label="Now Playing Movies">
+
+        </activity>
+        <activity android:name=".activity.UpComing"
+            android:label="Up Coming Movies">
+        </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 

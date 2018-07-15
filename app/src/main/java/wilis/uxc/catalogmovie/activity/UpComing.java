@@ -2,19 +2,13 @@ package wilis.uxc.catalogmovie.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
@@ -24,8 +18,8 @@ import butterknife.ButterKnife;
 import wilis.uxc.catalogmovie.R;
 import wilis.uxc.catalogmovie.adapter.MoviesAdapter;
 import wilis.uxc.catalogmovie.model.Movie;
-import wilis.uxc.catalogmovie.model.MovieResponse;
-import wilis.uxc.catalogmovie.model.SearchMovieResponse;
+import wilis.uxc.catalogmovie.model.NowPlayResponse;
+import wilis.uxc.catalogmovie.model.UpComingResponse;
 import wilis.uxc.catalogmovie.rest.MovieApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,19 +28,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class TopRates extends AppCompatActivity {
+public class UpComing extends AppCompatActivity {
 
-    @BindView(R.id.txt_cari)
-    EditText txt_cari;
-    @BindView(R.id.btn_cari)
-    Button btncari;
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView=null;
+    RecyclerView recyclerView;
 
     private static final String TAG = TopRates.class.getSimpleName();
     public static final String BASE_URL = "http://api.themoviedb.org/3/";
     private static Retrofit retrofit = null;
-
 
 
     // insert your themoviedb.org API KEY here
@@ -55,16 +44,8 @@ public class TopRates extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_toprates);
+        setContentView(R.layout.activity_playup);
         ButterKnife.bind(this);
-
-
-        btncari.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                connectAndGetApiData(String.valueOf(txt_cari.getText()));
-            }
-        });
 
 
         recyclerView.setHasFixedSize(true);
@@ -74,6 +55,8 @@ public class TopRates extends AppCompatActivity {
     }
 
 
+    // This method create an instance of Retrofit
+    // set the base url
     public void connectAndGetApiData(){
 
         if (retrofit == null) {
@@ -83,14 +66,14 @@ public class TopRates extends AppCompatActivity {
                     .build();
         }
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-        Call<MovieResponse> call = movieApiService.getTopRatedMovies(API_KEY);
-        call.enqueue(new Callback<MovieResponse>() {
+        Call<UpComingResponse> call = movieApiService.getUpComing(API_KEY);
+        call.enqueue(new Callback<UpComingResponse>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+            public void onResponse(Call<UpComingResponse> call, Response<UpComingResponse> response) {
                 final List<Movie> movies = response.body().getResults();
                 recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
                 Log.d(TAG, "Number of movies received: " + movies.size());
-                Toast.makeText(TopRates.this, "Number of movies received: " + movies.size(), Toast.LENGTH_LONG).show();
+                Toast.makeText(UpComing.this, "Number of movies received: " + movies.size(), Toast.LENGTH_LONG).show();
                 recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
 
                 /*perintah klik recyclerview*/
@@ -135,78 +118,9 @@ public class TopRates extends AppCompatActivity {
 
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable throwable) {
+            public void onFailure(Call<UpComingResponse> call, Throwable throwable) {
                 Log.e(TAG, throwable.toString());
             }
         });
     }
-
-    private void connectAndGetApiData(String query) {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-
-        MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-
-        Call<SearchMovieResponse> call = movieApiService.getSearchMovies(API_KEY,query);
-        call.enqueue(new Callback<SearchMovieResponse>() {
-            @Override
-            public void onResponse(Call<SearchMovieResponse> call, Response<SearchMovieResponse> response) {
-                final List<Movie> movies = response.body().getResults();
-                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
-                Log.d(TAG, "Number of movies received: " + movies.size());
-
-                recyclerView.setAdapter(new MoviesAdapter(movies, R.layout.list_item_movie, getApplicationContext()));
-
-                /*perintah klik recyclerview*/
-                recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                    GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
-
-                        public boolean onSingleTapUp(MotionEvent e){
-                            return true;
-                        }
-                    });
-
-                    @Override
-                    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                        View child = rv.findChildViewUnder(e.getX(), e.getY());
-                        if (child != null && gestureDetector.onTouchEvent(e)){
-                            int position = rv.getChildAdapterPosition(child);
-                            Toast.makeText(getApplicationContext(), "Id : " + movies.get(position).getId() + " selected", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(TopRates.this, DescriptionActivity.class);
-                            i.putExtra("id", movies.get(position).getId());
-                            i.putExtra("title", movies.get(position).getTitle());
-                            i.putExtra("date", movies.get(position).getReleaseDate());
-                            i.putExtra("vote", movies.get(position).getVoteAverage().toString());
-                            i.putExtra("overview", movies.get(position).getOverview());
-                            i.putExtra("bg", movies.get(position).getPosterPath());
-                            startActivity(i);
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-                    }
-
-                    @Override
-                    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<SearchMovieResponse> call, Throwable throwable) {
-                Log.e(TAG, throwable.toString());
-            }
-        });
-    }
-
-
-
 }

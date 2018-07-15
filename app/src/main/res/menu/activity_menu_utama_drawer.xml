@@ -7,27 +7,27 @@
         <item
             android:id="@+id/nav_toprates"
             android:icon="@drawable/ic_toprate"
-            android:title="Top Rates" />
+            android:title="Top Rates Movies" />
+
         <item
-            android:id="@+id/nav_search"
-            android:icon="@drawable/ic_search"
-            android:title="Cari Movie" />
+            android:id="@+id/nav_playnow"
+            android:icon="@drawable/ic_playnow"
+            android:title="Playing Now"/>
+
         <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_about"
-            android:title="About" />
+            android:id="@+id/nav_upcoming"
+            android:icon="@drawable/ic_upcoming"
+            android:title="Movies UpComing"/>
+
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="---------">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about"
+                android:title="About" />
         </menu>
     </item>
 

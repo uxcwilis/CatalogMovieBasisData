@@ -3,6 +3,7 @@ package wilis.uxc.catalogmovie.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -59,26 +60,19 @@ public class MenuUtama extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_utama, menu);
-        return true;
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (item.getItemId() == R.id.action_change_settings){
+            Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+            startActivity(mIntent);
         }
-
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -92,18 +86,13 @@ public class MenuUtama extends AppCompatActivity
 
             // Handle top rates moview list
            i = new Intent(this,TopRates.class);
-        } else if (id == R.id.nav_search) {
-            i = new Intent(this,SearchMovies.class);
-
-
         } else if (id == R.id.nav_about) {
             i = new Intent(this,About.class);
 
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_playnow) {
+            i = new Intent(this,PlayNow.class);
+        } else if (id == R.id.nav_upcoming) {
+            i = new Intent(this,UpComing.class);
         }
         startActivity(i);
 
